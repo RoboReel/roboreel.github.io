@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">RoboReel eye favicon</title>
+  <desc id="desc">A minimal eye mark for the RoboReel learning-from-observation benchmark.</desc>
+  <!-- Warm ivory sampled from the supplied reference. -->
+  <rect width="64" height="64" rx="15" fill="#F7F1E4"/>
+  <!-- Observation: one clear eye shape, designed to retain its meaning at 16 pixels. -->
+  <path d="M8.5 32C14.5 21.3 22.5 16 32 16C41.5 16 49.5 21.3 55.5 32C49.5 42.7 41.5 48 32 48C22.5 48 14.5 42.7 8.5 32Z" fill="none" stroke="#5C7774" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Soft sage pupil: visual learning without a harsh accent color. -->
+  <circle cx="32" cy="32" r="8" fill="#9FBDB5"/>
+</svg>

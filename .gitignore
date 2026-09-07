@@ -1,0 +1,10 @@
+# Source clips for the hero mosaic, copied from the LfO benchmark SSD.
+# Kept locally so the mosaic can be rebuilt without remounting the drive.
+# ~359 MB — never commit these; the built result (assets/video/hero-mosaic.mp4)
+# is what the site actually ships.
+assets/mosaic_src/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

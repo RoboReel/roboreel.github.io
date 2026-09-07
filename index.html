@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoboReel</title>
+<meta name="description" content="RoboReel: a unified benchmark for evaluating Learning-from-Observation models with paired real-world human videos and simulated robot trajectories across ten manipulation tasks.">
+<meta property="og:title" content="RoboReel — Monkey See, Can Monkey Do?">
+<meta property="og:description" content="A benchmark for evaluating robot skill learning by observation. Paired real-world human videos and simulated robot trajectories across ten manipulation tasks.">
+<meta property="og:image" content="assets/img/tasks-filmstrip.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     TOP NAV — disabled in favour of the left rail (.sidenav) below.
+     To switch back: uncomment this block and comment out <nav class="sidenav">.
+     It is already wired to reveal only after the hero (JS adds .revealed),
+     so it behaves the same way the side rail does.
+     ============================================================
+<nav class="nav" id="topnav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg class="reel" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="currentColor"/><rect x="10" y="16" width="44" height="32" rx="4" fill="var(--bg)"/><g fill="currentColor"><circle cx="18" cy="22" r="2.6"/><circle cx="30" cy="22" r="2.6"/><circle cx="42" cy="22" r="2.6"/><circle cx="18" cy="42" r="2.6"/><circle cx="30" cy="42" r="2.6"/><circle cx="42" cy="42" r="2.6"/></g><circle cx="32" cy="32" r="8" fill="var(--accent)"/></svg>
+      RoboReel
+    </div>
+    <div class="navlinks">
+      <a href="#abstract">Abstract</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#compare">Compare</a>
+      <a href="#baselines">Baselines</a>
+      <a href="#results">Results</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+    <span class="nav-venue">CoRL 2026</span>
+  </div>
+</nav>
+============================================================ -->
+
+<nav class="sidenav" id="sidenav" aria-label="Section navigation">
+  <ul>
+    <li><a href="#abstract"><span class="dot"></span><span class="label">Abstract</span></a></li>
+    <li><a href="#benchmark"><span class="dot"></span><span class="label">Benchmark</span></a></li>
+    <li><a href="#tasks"><span class="dot"></span><span class="label">Tasks</span></a></li>
+    <li><a href="#compare"><span class="dot"></span><span class="label">Compare</span></a></li>
+    <li><a href="#baselines"><span class="dot"></span><span class="label">Baselines</span></a></li>
+    <li><a href="#results"><span class="dot"></span><span class="label">Results</span></a></li>
+    <li><a href="#analysis"><span class="dot"></span><span class="label">Analysis</span></a></li>
+    <li><a href="#limitations"><span class="dot"></span><span class="label">Limitations</span></a></li>
+    <li><a href="#bibtex"><span class="dot"></span><span class="label">BibTeX</span></a></li>
+  </ul>
+</nav>
+
+<button class="theme-toggle" aria-label="Toggle color theme">☾</button>
+
+<header class="hero">
+  <div class="hero-mosaic" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-mosaic-poster.jpg">
+      <source src="assets/video/hero-mosaic.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-spotlight"></div>
+  <div class="hero-scrim"></div>
+
+  <div class="hero-inner">
+    <p class="hero-venue">Conference on Robot Learning (CoRL) 2026</p>
+    <h1 class="hero-title">RoboReel</h1>
+    <p class="hero-subtitle">A benchmark for evaluating robot skill learning by observation — paired real‑world human videos and simulated robot trajectories across ten manipulation tasks.</p>
+
+    <p class="hero-authors">
+      Weiwei Gu<sup>1,*</sup> · Anmol Gupta<sup>1,*</sup> · Anant Sah<sup>1,*</sup> · Ryan Varghese<sup>1</sup> · Lalitha Shreya Vanam<sup>1</sup> · Prabhath Adireddi<sup>1</sup> · Peter Karkus<sup>2</sup> · Nakul Gopalan<sup>1</sup>
+    </p>
+    <p class="hero-affils"><sup>1</sup><span class="c-asu">Arizona State University</span> &nbsp;·&nbsp; <sup>2</sup><span class="c-nvidia">NVIDIA</span>
+      <br>
+      <sup>*</sup>Equal contribution</p>
+    
+
+    <div class="hero-logos">
+      <div class="logo-asu">
+        <img src="assets/img/logos/asu-horiz.png" alt="Arizona State University">
+      </div>
+      <div class="logo-nvidia">
+        <img src="assets/img/logos/nvidia.svg" alt="NVIDIA">
+      </div>
+    </div>
+
+    <div class="hero-cta">
+      <button class="pill" disabled>Paper <span class="soon">Soon</span></button>
+      <button class="pill" disabled>Code <span class="soon">Soon</span></button>
+      <button class="pill" disabled>Data <span class="soon">Soon</span></button>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#abstract" aria-label="Scroll to the abstract">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</header>
+
+<section id="abstract">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Abstract</span>
+      <h2>Why another benchmark?</h2>
+    </div>
+    <p style="max-width:74ch; font-size:17px; color:var(--ink-soft)">
+      Learning from Observation (LfO) is a fundamental robotic capability that replicates how humans and animals socially learn from each other. Beyond its biological parallels, this modality offers a practical solution for data scaling in sample‑inefficient, data‑starved domains like robotics. Recent work has demonstrated promising results in learning manipulation skills from human videos, yet progress in this area remains difficult to assess: existing methods vary widely in assumptions, hardware choices, and environment setups, making meaningful comparisons — and identifying real advances — hard to come by.
+    </p>
+    <p style="max-width:74ch; font-size:17px; color:var(--ink-soft)">
+      To address this, we introduce <strong style="color:var(--ink)">RoboReel</strong>: a unified benchmark for evaluating models that learn policies from human videos. RoboReel bundles real‑world human demonstration videos, simulated robot trajectories, and evaluation environments across ten manipulation tasks, with four test suites that probe robustness to visual distractors and the ability to complete long‑horizon tasks. We evaluate learning‑from‑observation models from three different representational categories — over seven state‑of‑the‑art algorithms, including our own VLA‑based variants — and analyze where each family succeeds and fails. Our results show that long‑horizon tasks and tasks with low manipulation tolerances remain challenging for every current method.
+    </p>
+
+    <div class="stats" style="margin-top:36px">
+      <div class="stat"><div class="v">10</div><div class="l">manipulation tasks, each with a paired sim twin</div></div>
+      <div class="stat"><div class="v">2,000</div><div class="l">real‑world human demo videos</div></div>
+      <div class="stat"><div class="v">7H+</div><div class="l">of calibrated multi‑view data</div></div>
+      <div class="stat"><div class="v">4</div><div class="l">synchronized camera views</div></div>
+      <div class="stat"><div class="v">4</div><div class="l">test suites (ND · WD · ED · PD)</div></div>
+      <div class="stat"><div class="v">7+</div><div class="l">SOTA baselines evaluated</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="benchmark">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Benchmark</span>
+      <h2>How RoboReel is built</h2>
+      <p>Six participants perform each task at a calibrated tabletop rig. Their videos are annotated with 3D hand and object poses, then mirrored into a digital‑twin simulation with matching objects, textures, and camera poses.</p>
+    </div>
+
+    <div class="pipeline">
+      <img src="assets/img/pipeline.jpg" alt="RoboReel data pipeline: real-world capture rig, human video collection, 3D hand/object pose annotation, and paired simulation tasks">
+      <ol class="steps">
+        <li>
+          <h4>Real‑world data collection setup</h4>
+          <p>A calibrated tabletop rig: three fixed RealSense&nbsp;L515 cameras (front, left, right) plus a helmet‑mounted RealSense&nbsp;D435 for an egocentric view.</p>
+        </li>
+        <li>
+          <h4>Collect real‑world human videos</h4>
+          <p>Six participants demonstrate each of the ten tasks under both clean and visually distracted conditions — 100 demos per task per condition.</p>
+        </li>
+        <li>
+          <h4>Annotate 3D hand and object poses</h4>
+          <p>Per‑frame hand and object keypoints are recovered in a shared, calibrated coordinate frame, powering the Pose‑Defined test suite.</p>
+        </li>
+        <li>
+          <h4>Create paired simulation tasks</h4>
+          <p>A ManiSkill / SAPIEN digital twin reconstructs every object's mesh, texture, and the real camera geometry, so sim and real line up visually and metrically.</p>
+        </li>
+      </ol>
+    </div>
+
+    <div style="margin-top:64px" class="section-head">
+      <span class="eyebrow">Four test suites</span>
+      <h2>One benchmark, four axes of difficulty</h2>
+      <p>Three suites probe robustness to visual distractors under different train/eval regimes; the fourth is a calibrated suite for keypoint‑ and pose‑based methods.</p>
+    </div>
+    <div class="suites">
+      <div class="suite">
+        <span class="suit">♠</span>
+        <h4>No Distraction (ND)</h4>
+        <dl>
+          <dt>Train</dt><dd>Human + robot data, no distractors</dd>
+          <dt>Eval</dt><dd>Demo environment, no distractors</dd>
+          <dt>Tests</dt><dd>Raw LfO capability under clean conditions</dd>
+        </dl>
+      </div>
+      <div class="suite">
+        <span class="suit">♥</span>
+        <h4>With Distraction (WD)</h4>
+        <dl>
+          <dt>Train</dt><dd>Human + robot data with distractors</dd>
+          <dt>Eval</dt><dd>Demo environment with distractors</dd>
+          <dt>Tests</dt><dd>In‑distribution robustness to clutter</dd>
+        </dl>
+      </div>
+      <div class="suite">
+        <span class="suit">♣</span>
+        <h4>Evaluation Distraction (ED)</h4>
+        <dl>
+          <dt>Train</dt><dd>Clean data only</dd>
+          <dt>Eval</dt><dd>Distractors added at test time only</dd>
+          <dt>Tests</dt><dd>Robustness to an unseen distribution shift</dd>
+        </dl>
+      </div>
+      <div class="suite">
+        <span class="suit">♦</span>
+        <h4>Pose Defined (PD)</h4>
+        <dl>
+          <dt>Train</dt><dd>3D hand‑pose annotated demos</dd>
+          <dt>Eval</dt><dd>Calibrated env., shared action space</dd>
+          <dt>Tests</dt><dd>Whether pose annotations beat raw pixels</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tasks">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Tasks</span>
+      <h2>Ten tasks, real and paired‑simulated</h2>
+      <p>Every task is filmed with a real human demonstrator (top row) and rebuilt as a matching digital twin (bottom row) so any LfO method can be evaluated on identical geometry, texture, and camera pose.</p>
+    </div>
+
+    <div class="filmstrip-wrap film-frame">
+      <div class="sprockets"></div>
+      <div class="film-body" style="padding:10px">
+        <img src="assets/img/tasks-filmstrip.jpg" alt="Filmstrip of the ten RoboReel tasks, real human demo above and paired simulation below, for each task">
+      </div>
+      <div class="sprockets bottom"></div>
+    </div>
+
+    <div class="task-grid" style="margin-top:22px">
+      <div class="task-card"><span class="letter">a</span>Push Cube</div>
+      <div class="task-card"><span class="letter">b</span>Close Drawer</div>
+      <div class="task-card"><span class="letter">c</span>Empty Basket</div>
+      <div class="task-card"><span class="letter">d</span>Press Toaster Button</div>
+      <div class="task-card"><span class="letter">e</span>Open Lid</div>
+      <div class="task-card"><span class="letter">f</span>Pick Cube</div>
+      <div class="task-card"><span class="letter">g</span>Place Bowl in Plate</div>
+      <div class="task-card"><span class="letter">h</span>Place Toys in Basket</div>
+      <div class="task-card"><span class="letter">i</span>Place Toy in Drawer &amp; Close</div>
+      <div class="task-card"><span class="letter">j</span>Stack Three Cups</div>
+    </div>
+
+    <div style="margin-top:56px" class="section-head">
+      <span class="eyebrow">Pose‑Defined suite</span>
+      <h2>Calibrated 3D keypoint annotations</h2>
+      <p>Every human demo also carries per‑frame hand and object keypoints in a shared, calibrated coordinate frame — the input to keypoint‑based LfO methods like PointPolicy.</p>
+    </div>
+    <div class="kp-grid">
+      <div class="kp-card"><img src="assets/img/keypoints/pick_cube.png" alt="Keypoint annotation for Pick Cube: gripper keypoint K0 and cube keypoint"><div class="cap">Pick Cube — gripper + object keypoints</div></div>
+      <div class="kp-card"><img src="assets/img/keypoints/close_drawer.png" alt="Keypoint annotation for Close Drawer, overhead camera: K0-K4 on drawer front"><div class="cap">Close Drawer — 4 corner keypoints (overhead)</div></div>
+      <div class="kp-card"><img src="assets/img/keypoints/open_lid.png" alt="Keypoint annotation for Open Lid"><div class="cap">Open Lid — lid + basket keypoints</div></div>
+      <div class="kp-card"><img src="assets/img/keypoints/bowl_on_plate.png" alt="Keypoint annotation for Bowl on Plate"><div class="cap">Bowl in Plate — bowl + plate keypoints</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Comparison</span>
+      <h2>How RoboReel compares</h2>
+      <p>RoboReel is the only benchmark that pairs multi‑view, distractor‑annotated real‑world human video with a matching evaluation environment.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Real‑world<br>human&nbsp;vid.</th>
+            <th>Human demo.<br>w/ distractions</th>
+            <th>Multi‑view<br>demo.</th>
+            <th>Paired real‑world<br>human vid. eval env.</th>
+            <th>Env. w/<br>distractions</th>
+            <th>Multi‑view<br>env.</th>
+            <th>Articulated<br>objects</th>
+            <th>Long<br>horizon</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>RoboCerebra</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><th>LIBERO</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><th>RoboCasa</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><th>VLABench</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><th>MimicGen</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr class="group-gap"><th>EgoVerse</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><th>Human2Robot</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td></tr>
+          <tr><th>RH20T</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td></tr>
+          <tr><th>MimicDroid</th><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td></tr>
+          <tr class="ours group-gap"><th>RoboReel (Ours)</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="baselines">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Baselines</span>
+      <h2>Three ways to learn from a human video</h2>
+      <p>We group every baseline by how it turns a human demonstration into something a robot policy can act on.</p>
+    </div>
+    <img class="taxonomy-img" src="assets/img/baseline-taxonomy.jpg" alt="Diagram of the three baseline families: explicit language representation, implicit latent representation, and keypoint-based learning">
+    <div class="families">
+      <div class="family">
+        <span class="letter-badge">A</span>
+        <h4>Explicit representation</h4>
+        <p>A pretrained VLM turns the human video into a language instruction, which a downstream VLA or planner executes.</p>
+        <div class="models">SeeDo · VLM + π₀.₅ (language)</div>
+      </div>
+      <div class="family">
+        <span class="letter-badge">B</span>
+        <h4>Implicit representation</h4>
+        <p>A pretrained visual encoder maps the human video into a latent encoding that conditions an end‑to‑end policy.</p>
+        <div class="models">Video‑Cond. π₀.₅ (Uniform / Keyframes) · Vid2Robot · UniSkill</div>
+      </div>
+      <div class="family">
+        <span class="letter-badge">C</span>
+        <h4>Keypoint‑based learning</h4>
+        <p>An imitation‑learning policy trains directly on 3D hand‑pose keypoints and rolls out on an environment sharing the same action space.</p>
+        <div class="models">PointPolicy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Results</span>
+      <h2>Success rate by task and test suite</h2>
+      <p>Mean ± std success rate (%) over 3 seeds. <span class="best" style="color:var(--best); font-weight:700;">Red bold</span> marks the best result in the column; <strong>black bold</strong> marks the best result within a model family.</p>
+    </div>
+
+    <div class="tabs" data-tabs role="tablist">
+      <button class="tab" data-tab="nd" aria-selected="true" role="tab">♠ No Distraction</button>
+      <button class="tab" data-tab="wd" aria-selected="false" role="tab">♥ With Distraction</button>
+      <button class="tab" data-tab="ed" aria-selected="false" role="tab">♣ Evaluation Distraction</button>
+    </div>
+
+    <!-- ND -->
+    <div class="tabpanel active" data-panel="nd">
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Family</th><th>Model</th><th>Bowl in<br>Plate</th><th>Close<br>Drawer</th><th>Empty<br>Basket</th><th>Open<br>Lid</th><th>Pick<br>Cube</th><th>Press<br>Toaster</th><th>Push<br>Cube</th><th>Stack<br>Cups</th><th>Toys in<br>Basket</th><th>Toy in<br>Drawer</th></tr>
+          </thead>
+          <tbody>
+            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">71.3±2.2</td><td class="na">N/A</td><td>7.8±1.9</td><td>54.1±3.6</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="fam-best">18.7±1.9</td><td class="na">N/A</td></tr>
+            <tr><th>VLM + π₀.₅</th><td>1.7±1.7</td><td class="fam-best">88.3±3.3</td><td>1.7±1.7</td><td>20.0±2.9</td><td>6.7±1.7</td><td>31.7±3.3</td><td>18.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>16.7±4.4</td></tr>
+            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>31.7±3.3</td><td>98.3±1.7</td><td>18.3±6.7</td><td class="best">93.3±4.4</td><td class="best">55.0±5.8</td><td>83.3±3.3</td><td>78.3±6.0</td><td class="best">11.7±3.3</td><td>20.0±2.9</td><td>16.7±7.3</td></tr>
+            <tr><th>π₀.₅ (Keyframes)</th><td class="fam-best">46.7±6.0</td><td class="best">100.0±0.0</td><td class="best">20.0±2.9</td><td>73.3±1.7</td><td>23.3±7.3</td><td class="best">88.3±6.7</td><td class="best">100.0±0.0</td><td>8.3±3.3</td><td class="best">21.7±3.3</td><td class="best">20.0±7.6</td></tr>
+            <tr><th>Vid2Robot</th><td>1.7±1.7</td><td>21.7±3.3</td><td>3.3±1.7</td><td>3.3±3.3</td><td>1.7±1.7</td><td>21.7±6.0</td><td>5.0±2.9</td><td>3.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+            <tr><th>UniSkill</th><td>0.0±0.0</td><td>66.7±8.8</td><td>0.0±0.0</td><td>8.3±1.7</td><td>10.0±2.9</td><td>25.0±10.0</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WD -->
+    <div class="tabpanel" data-panel="wd">
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Family</th><th>Model</th><th>Bowl in<br>Plate</th><th>Close<br>Drawer</th><th>Empty<br>Basket</th><th>Open<br>Lid</th><th>Pick<br>Cube</th><th>Press<br>Toaster</th><th>Push<br>Cube</th><th>Stack<br>Cups</th><th>Toys in<br>Basket</th><th>Toy in<br>Drawer</th></tr>
+          </thead>
+          <tbody>
+            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">66.3±0.4</td><td class="na">N/A</td><td>4.9±2.0</td><td class="fam-best">37.8±3.1</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="best">11.1±2.3</td><td class="na">N/A</td></tr>
+            <tr><th>VLM + π₀.₅</th><td>30.0±7.6</td><td>63.3±4.4</td><td class="fam-best">13.3±1.7</td><td>18.3±4.4</td><td class="fam-best">5.0±5.0</td><td>13.3±1.7</td><td>15.0±5.0</td><td>0.0±0.0</td><td>1.7±1.7</td><td>5.0±2.9</td></tr>
+            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>86.7±4.4</td><td class="best">86.7±3.3</td><td class="best">25.0±2.9</td><td>73.3±10.1</td><td>13.3±6.0</td><td>45.0±7.6</td><td class="best">71.7±8.3</td><td>5.0±0.0</td><td class="best">5.0±2.9</td><td class="best">23.3±3.3</td></tr>
+            <tr><th>π₀.₅ (Keyframes)</th><td class="best">88.3±7.3</td><td>85.0±5.0</td><td>21.7±7.3</td><td class="best">85.0±2.9</td><td class="best">48.3±6.0</td><td class="best">56.7±6.0</td><td>21.7±6.0</td><td class="best">8.3±4.4</td><td>3.3±1.7</td><td>18.3±1.7</td></tr>
+            <tr><th>Vid2Robot</th><td>6.7±4.4</td><td>10.0±5.8</td><td>3.3±3.3</td><td>0.0±0.0</td><td>0.0±0.0</td><td>30.0±5.0</td><td>8.3±3.3</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+            <tr><th>UniSkill</th><td>0.0±0.0</td><td>56.7±13.6</td><td>10.0±2.9</td><td>21.7±6.7</td><td>1.7±1.7</td><td>21.7±7.3</td><td>8.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ED -->
+    <div class="tabpanel" data-panel="ed">
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Family</th><th>Model</th><th>Bowl in<br>Plate</th><th>Close<br>Drawer</th><th>Empty<br>Basket</th><th>Open<br>Lid</th><th>Pick<br>Cube</th><th>Press<br>Toaster</th><th>Push<br>Cube</th><th>Stack<br>Cups</th><th>Toys in<br>Basket</th><th>Toy in<br>Drawer</th></tr>
+          </thead>
+          <tbody>
+            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">66.3±0.4</td><td class="na">N/A</td><td>4.9±2.0</td><td class="fam-best">37.8±3.1</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="fam-best">11.1±2.3</td><td class="na">N/A</td></tr>
+            <tr><th>VLM + π₀.₅</th><td>6.7±3.3</td><td>61.7±3.3</td><td>5.0±5.0</td><td>6.7±1.7</td><td>11.7±4.4</td><td>15.0±5.0</td><td>6.7±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>31.7±4.4</td><td>58.3±8.3</td><td>18.3±4.4</td><td>61.7±4.4</td><td>25.0±5.8</td><td>15.0±5.0</td><td>6.7±4.4</td><td>5.0±2.9</td><td>11.7±4.4</td><td>6.7±1.7</td></tr>
+            <tr><th>π₀.₅ (Keyframes)</th><td>25.0±5.0</td><td class="best">70.0±2.9</td><td class="best">21.7±4.4</td><td class="best">63.3±4.4</td><td class="best">30.0±5.0</td><td>26.7±4.4</td><td class="best">31.7±3.3</td><td class="best">11.7±4.4</td><td class="best">18.3±3.3</td><td>6.7±1.7</td></tr>
+            <tr><th>Vid2Robot</th><td>0.0±0.0</td><td>23.3±1.7</td><td>5.0±2.9</td><td>0.0±0.0</td><td>0.0±0.0</td><td>23.3±9.3</td><td>6.7±3.3</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+            <tr><th>UniSkill</th><td>0.0±0.0</td><td>63.3±14.8</td><td>0.0±0.0</td><td>18.3±1.7</td><td>1.7±1.7</td><td class="best">28.3±8.8</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="tag" style="margin-top:14px">N/A — SeeDo's action vocabulary is restricted to pick‑and‑place tasks.</p>
+
+    <div style="margin-top:64px" class="pd-wrap">
+      <div class="chart-card">
+        <div class="chart-title">PointPolicy success rate — Pose‑Defined suite (♦)</div>
+        <svg viewBox="0 0 460 260" role="img" aria-label="Bar chart: PointPolicy success rate on five tasks, no distraction versus with distraction. Push Cube 95 and 95. Close Drawer 48 and 50. Open Lid 10 and 5. Pick Cube 8 and 8. Bowl in Plate 2 and 0.">
+          <!-- gridlines -->
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="40" y1="20" x2="440" y2="20"/>
+            <line x1="40" y1="65" x2="440" y2="65"/>
+            <line x1="40" y1="110" x2="440" y2="110"/>
+            <line x1="40" y1="155" x2="440" y2="155"/>
+            <line x1="40" y1="200" x2="440" y2="200"/>
+          </g>
+          <g fill="var(--muted)" font-family="var(--mono)" font-size="10">
+            <text x="34" y="203" text-anchor="end">0</text>
+            <text x="34" y="158" text-anchor="end">25</text>
+            <text x="34" y="113" text-anchor="end">50</text>
+            <text x="34" y="68" text-anchor="end">75</text>
+            <text x="34" y="24" text-anchor="end">100</text>
+          </g>
+          <line x1="40" y1="200" x2="440" y2="200" stroke="var(--line-strong)" stroke-width="1.5"/>
+
+          <!-- bars: baseline y=200, scale ~1.8px per % -->
+          <!-- Push Cube 95/95 -->
+          <g>
+            <rect x="60" y="29" width="20" height="171" rx="4" fill="var(--series-1)"/>
+            <rect x="82" y="29" width="20" height="171" rx="4" fill="var(--series-2)"/>
+            <text x="70" y="22" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">95</text>
+            <text x="92" y="22" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">95</text>
+            <text x="81" y="218" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Push Cube</text>
+          </g>
+          <!-- Close Drawer 48/50 -->
+          <g>
+            <rect x="140" y="113" width="20" height="87" rx="4" fill="var(--series-1)"/>
+            <rect x="162" y="110" width="20" height="90" rx="4" fill="var(--series-2)"/>
+            <text x="150" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">48</text>
+            <text x="172" y="103" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">50</text>
+            <text x="161" y="218" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Close Drawer</text>
+          </g>
+          <!-- Open Lid 10/5 -->
+          <g>
+            <rect x="220" y="182" width="20" height="18" rx="4" fill="var(--series-1)"/>
+            <rect x="242" y="191" width="20" height="9" rx="4" fill="var(--series-2)"/>
+            <text x="230" y="175" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">10</text>
+            <text x="252" y="184" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">5</text>
+            <text x="241" y="218" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Open Lid</text>
+          </g>
+          <!-- Pick Cube 8/8 -->
+          <g>
+            <rect x="300" y="185" width="20" height="15" rx="4" fill="var(--series-1)"/>
+            <rect x="322" y="185" width="20" height="15" rx="4" fill="var(--series-2)"/>
+            <text x="310" y="178" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">8</text>
+            <text x="332" y="178" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">8</text>
+            <text x="321" y="218" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Pick Cube</text>
+          </g>
+          <!-- Bowl in Plate 2/0 -->
+          <g>
+            <rect x="380" y="196" width="20" height="4" rx="2" fill="var(--series-1)"/>
+            <rect x="402" y="199" width="20" height="1" rx="0.5" fill="var(--series-2)"/>
+            <text x="390" y="189" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">2</text>
+            <text x="412" y="192" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">0</text>
+            <text x="401" y="218" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Bowl in Plate</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--series-1)"></span>No distraction</span>
+          <span><span class="sw" style="background:var(--series-2)"></span>With distraction</span>
+        </div>
+      </div>
+      <div>
+        <h3>Keypoints capture motion, not grasps</h3>
+        <p style="color:var(--ink-soft); font-size:14.5px">PointPolicy tracks the demonstrator's trajectory well on tasks that tolerate a few centimeters of error — Push Cube and Close Drawer stay strong even under distraction. But success collapses on anything that needs a precise grasp (Open&nbsp;Lid, Pick&nbsp;Cube, Bowl&nbsp;in&nbsp;Plate): a ~2–3&nbsp;cm precision floor in the rigid‑transform action recovery means the policy can navigate to the right sub‑region of the workspace but can't reliably close the last few centimeters onto a graspable surface.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="analysis">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Analysis</span>
+      <h2>Six questions about current LfO methods</h2>
+    </div>
+
+    <details class="qa" open>
+      <summary>Q1. Which model family performs best?</summary>
+      <div class="body">Video‑conditioned π₀.₅ variants win across every test suite, which we attribute to large‑scale VLA pretraining giving better correspondence between human‑video features and robot actions. Uniform and keyframe sampling are close in ND/WD, where train and eval share the same distraction condition — but the gap widens sharply in ED, where keyframe sampling wins on 7 of 10 tasks. Keyframes capture task‑relevant moments in the demonstration, making the policy more robust to the visual domain shift introduced at evaluation time.</div>
+    </details>
+    <details class="qa">
+      <summary>Q2. Does task length affect performance?</summary>
+      <div class="body">Yes — task horizon has a clear negative effect on success rate across every suite and family. Long‑horizon tasks (Empty Basket, Stack Cups, Toys in Basket, Toy in Drawer) require several sequential sub‑goals, and failure at any one fails the whole task. Short‑horizon tasks like Push Cube, Pick Cube, and Close Drawer see substantially higher success. Even the strongest baseline stays below 25% on long‑horizon tasks.</div>
+    </details>
+    <details class="qa">
+      <summary>Q3. Do VLAs benefit more from explicit language guidance?</summary>
+      <div class="body">We expected internet‑scale pretraining to let VLMs summarize demonstrations into useful instructions better than implicit encoders. The opposite holds: implicit representation consistently outperforms explicit representation across all three suites. We hypothesize that implicit methods' additional exposure to robot‑trajectory data during pretraining helps them overcome VLMs' known weakness in visual‑temporal reasoning.</div>
+    </details>
+    <details class="qa">
+      <summary>Q4. Can models learn tasks with low manipulation tolerances?</summary>
+      <div class="body">Press Toaster and Stack Cups have the least tolerance for error. π₀.₅ tops 88% success on Press Toaster in the ND suite, but performance degrades steadily from ND → WD → ED as distractor clutter confuses localization of the small target button. Stack Cups stays low across every suite and model — it combines a long horizon with precise placement, compounding the difficulty.</div>
+    </details>
+    <details class="qa">
+      <summary>Q5. Do calibrated keypoints help learning from observation?</summary>
+      <div class="body">Partially. Keypoint annotations help PointPolicy learn overall trajectory behavior — strong, distraction‑robust performance on Push Cube and Close Drawer — but this doesn't translate into consistent gains. Performance drops sharply on tasks that require precise grasping (Pick Cube, Open Lid, Bowl in Plate): keypoints alone can't fully specify a good grasp configuration on objects like bowls and handles.</div>
+    </details>
+    <details class="qa">
+      <summary>Q6. What are the fundamental limitations of current LfO methods?</summary>
+      <div class="body">Three gaps recur across every family: compounding errors make long‑horizon tasks unreliable; precise manipulation in cluttered scenes is hard for every method; and while large‑scale VLA pretraining gives a strong foundation, it hasn't yet closed the gap to the fine‑grained precision these tasks demand.</div>
+    </details>
+  </div>
+</section>
+
+<section id="limitations">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Limitations</span>
+      <h2>What RoboReel doesn't cover — yet</h2>
+    </div>
+    <div class="limits">
+      <div class="limit"><h4>Goal‑based tasks only</h4>Success is checked at a terminal state, so non‑Markovian or open‑ended skills that never resolve to a single goal condition fall outside the benchmark's scope.</div>
+      <div class="limit"><h4>No soft‑body objects</h4>Deformable‑object physics remain too unreliable to simulate accurately, so every task uses rigid bodies with articulated‑object support for drawers and lids.</div>
+      <div class="limit"><h4>Single‑arm only</h4>Every task uses one Franka Panda arm. Bimanual coordination is out of scope, and would meaningfully complicate action generation for every model evaluated here.</div>
+    </div>
+  </div>
+</section>
+
+<section id="bibtex">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Cite this work</span>
+      <h2>BibTeX</h2>
+    </div>
+    <div class="bibtex-card">
+      <button class="copy-btn">copy</button>
+      <pre id="bibtex-src">@inproceedings{gu2026roboreel,
+  title     = {Monkey See, Can Monkey Do? A Benchmark for Evaluating Robot Skill Learning by Observation},
+  author    = {Gu, Weiwei and Gupta, Anmol and Sah, Anant and Varghese, Ryan and Vanam, Lalitha Shreya and Adireddi, Prabhath and Karkus, Peter and Gopalan, Nakul},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <span>© 2026 · School of Augmented Intelligence, Arizona State University · NVIDIA</span>
+    <span>RoboReel</span>
+  </div>
+</footer>
+
+<style>
+  /* chart series colors — validated categorical slots 1 & 2 */
+  :root{ --series-1:#2a78d6; --series-2:#eb6834; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --series-1:#3987e5; --series-2:#d95926; } }
+  :root[data-theme="dark"]{ --series-1:#3987e5; --series-2:#d95926; }
+</style>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
