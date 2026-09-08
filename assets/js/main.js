@@ -56,6 +56,68 @@
     });
   });
 
+  // ---- Tasks: click a card to swap the filmstrip for that task's videos ----
+  // File paths are derived from the card's data-task slug, so re-running
+  // tools/build_task_videos.sh with a new source clip is all it takes to change
+  // what plays here — no markup edit needed.
+  var taskCards = document.querySelectorAll(".task-card[data-task]");
+  var filmstrip = document.getElementById("task-filmstrip");
+  var player = document.getElementById("task-player");
+  if (taskCards.length && filmstrip && player) {
+    var playerTitle = document.getElementById("task-player-title");
+    var humanVid = document.getElementById("task-video-human");
+    var robotVid = document.getElementById("task-video-robot");
+    var selected = null;
+
+    function labelOf(card) {
+      // the card text minus its leading letter badge
+      var clone = card.cloneNode(true);
+      var badge = clone.querySelector(".letter");
+      if (badge) badge.parentNode.removeChild(badge);
+      return clone.textContent.trim();
+    }
+
+    function showFilmstrip() {
+      selected = null;
+      taskCards.forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+      [humanVid, robotVid].forEach(function (v) {
+        v.pause();
+        v.removeAttribute("src");
+        v.load();            // drop the buffered clip so it stops downloading
+      });
+      player.hidden = true;
+      filmstrip.hidden = false;
+    }
+
+    function showTask(card) {
+      var slug = card.dataset.task;
+      selected = slug;
+      taskCards.forEach(function (c) {
+        c.setAttribute("aria-pressed", String(c.dataset.task === slug));
+      });
+      playerTitle.textContent = labelOf(card);
+      humanVid.src = "assets/video/tasks/" + slug + "-human.mp4";
+      robotVid.src = "assets/video/tasks/" + slug + "-robot.mp4";
+      [humanVid, robotVid].forEach(function (v) {
+        v.load();
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});   // autoplay blocked: leave it paused
+      });
+      filmstrip.hidden = true;
+      player.hidden = false;
+    }
+
+    taskCards.forEach(function (card) {
+      card.addEventListener("click", function () {
+        if (selected === card.dataset.task) showFilmstrip();
+        else showTask(card);
+      });
+    });
+
+    var closeBtn = document.getElementById("task-player-close");
+    if (closeBtn) closeBtn.addEventListener("click", showFilmstrip);
+  }
+
   // ---- BibTeX copy ----
   var copyBtn = document.querySelector(".copy-btn");
   if (copyBtn) {

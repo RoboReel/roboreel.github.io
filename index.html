@@ -242,7 +242,7 @@
       <p>Every task is filmed with a real human demonstrator (top row) and rebuilt as a matching digital twin (bottom row) so any LfO method can be evaluated on identical geometry, texture, and camera pose.</p>
     </div>
 
-    <div class="filmstrip-wrap film-frame">
+    <div class="filmstrip-wrap film-frame" id="task-filmstrip">
       <div class="sprockets"></div>
       <div class="film-body" style="padding:10px">
         <img src="assets/img/tasks-filmstrip.jpg" alt="Filmstrip of the ten RoboReel tasks, real human demo above and paired simulation below, for each task">
@@ -250,17 +250,41 @@
       <div class="sprockets bottom"></div>
     </div>
 
+    <!-- Shown in place of the filmstrip once a task card is picked. The two
+         <source> elements are rewritten by assets/js/main.js from the card's
+         data-task slug; the files come from tools/build_task_videos.sh. -->
+    <div class="task-player film-frame" id="task-player" hidden>
+      <div class="sprockets"></div>
+      <div class="film-body">
+        <div class="task-player-head">
+          <h3 id="task-player-title">Push Cube</h3>
+          <button type="button" class="task-player-close" id="task-player-close">Show all ten</button>
+        </div>
+        <div class="task-player-pair">
+          <figure>
+            <video id="task-video-human" muted loop playsinline preload="metadata"></video>
+            <figcaption>Real‑world human demonstration <span>front camera</span></figcaption>
+          </figure>
+          <figure>
+            <video id="task-video-robot" muted loop playsinline preload="metadata"></video>
+            <figcaption>Paired simulated robot <span>base camera</span></figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="sprockets bottom"></div>
+    </div>
+
     <div class="task-grid" style="margin-top:22px">
-      <div class="task-card"><span class="letter">a</span>Push Cube</div>
-      <div class="task-card"><span class="letter">b</span>Close Drawer</div>
-      <div class="task-card"><span class="letter">c</span>Empty Basket</div>
-      <div class="task-card"><span class="letter">d</span>Press Toaster Button</div>
-      <div class="task-card"><span class="letter">e</span>Open Lid</div>
-      <div class="task-card"><span class="letter">f</span>Pick Cube</div>
-      <div class="task-card"><span class="letter">g</span>Place Bowl in Plate</div>
-      <div class="task-card"><span class="letter">h</span>Place Toys in Basket</div>
-      <div class="task-card"><span class="letter">i</span>Place Toy in Drawer &amp; Close</div>
-      <div class="task-card"><span class="letter">j</span>Stack Three Cups</div>
+      <button type="button" class="task-card" data-task="push_cube" aria-pressed="false"><span class="letter">a</span>Push Cube</button>
+      <button type="button" class="task-card" data-task="close_drawer" aria-pressed="false"><span class="letter">b</span>Close Drawer</button>
+      <button type="button" class="task-card" data-task="empty_basket" aria-pressed="false"><span class="letter">c</span>Empty Basket</button>
+      <button type="button" class="task-card" data-task="press_toaster" aria-pressed="false"><span class="letter">d</span>Press Toaster Button</button>
+      <button type="button" class="task-card" data-task="open_lid" aria-pressed="false"><span class="letter">e</span>Open Lid</button>
+      <button type="button" class="task-card" data-task="pick_cube" aria-pressed="false"><span class="letter">f</span>Pick Cube</button>
+      <button type="button" class="task-card" data-task="bowl_in_plate" aria-pressed="false"><span class="letter">g</span>Place Bowl in Plate</button>
+      <button type="button" class="task-card" data-task="toys_in_basket" aria-pressed="false"><span class="letter">h</span>Place Toys in Basket</button>
+      <button type="button" class="task-card" data-task="toy_drawer_close" aria-pressed="false"><span class="letter">i</span>Place in Drawer &amp; Close</button>
+      <button type="button" class="task-card" data-task="stack_cups" aria-pressed="false"><span class="letter">j</span>Stack Three Cups</button>
     </div>
 
     <div style="margin-top:56px" class="section-head">

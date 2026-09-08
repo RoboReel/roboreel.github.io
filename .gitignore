@@ -4,6 +4,12 @@
 # is what the site actually ships.
 assets/mosaic_src/
 
+# Full-size originals for the ten Tasks-section clip pairs, copied off the same
+# SSD. ~77 MB — the built results (assets/video/tasks/*.mp4, ~2 MB) are what the
+# site ships and those ARE committed. Drop a replacement in here as
+# <slug>-robot.mp4 and re-run tools/build_task_videos.sh.
+assets/task_src/
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db
