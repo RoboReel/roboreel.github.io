@@ -376,8 +376,6 @@ p{ margin:0 0 1em; }
 .suite dd{ margin:2px 0 0; }
 
 /* ---------- Tasks filmstrip ---------- */
-.filmstrip-wrap{ margin-bottom:28px; }
-.filmstrip-wrap img{ border-radius:12px; }
 .task-grid{
   display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
   /* every row matches the tallest card, so a label that wraps to two lines
@@ -389,8 +387,8 @@ p{ margin:0 0 1em; }
 .task-card{
   background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 14px;
   font-size:13.5px;
-  display:flex; align-items:center;
-  font-family:inherit; color:inherit; text-align:left; line-height:1.35;
+  display:flex; align-items:center; justify-content:center;
+  font-family:inherit; color:inherit; text-align:center; line-height:1.35;
   cursor:pointer; transition:border-color .15s ease, background .15s ease, transform .15s ease;
 }
 .task-card:hover{ border-color:var(--line-strong); transform:translateY(-1px); }
@@ -398,14 +396,24 @@ p{ margin:0 0 1em; }
 .task-card[aria-pressed="true"]{
   background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); font-weight:600;
 }
-.task-card .letter{ font-family:var(--mono); color:var(--accent-ink); font-size:12px; margin-right:6px; flex:none; }
 
-/* ---------- Per-task human / robot player ---------- */
-.task-player{ margin-bottom:28px; }
-.task-player .film-body{ padding:14px 16px 16px; }
+/* ---------- Tasks stage: filmstrip and per-task player share one frame ------
+   Both views sit in a box locked to the filmstrip image's 2200x679 ratio, so
+   the black film border keeps exactly the same dimensions when a task is
+   picked. The player's videos flex into whatever height is left under its
+   header, which lands within a couple of percent of 16:9 at the container's
+   width - close enough that object-fit:cover barely crops the human clip. */
+.tasks-stage{ margin-bottom:28px; }
+.tasks-stage .film-body{ padding:10px; }
+.stage-view{ aspect-ratio:2200/679; }
+.stage-view img{
+  width:100%; height:100%; object-fit:cover; border-radius:12px; display:block;
+}
+.task-player{ display:flex; flex-direction:column; }
+.task-player[hidden]{ display:none; }
 .task-player-head{
   display:flex; align-items:baseline; justify-content:space-between; gap:16px;
-  margin-bottom:12px; color:var(--film-ink);
+  margin:2px 4px 10px; color:var(--film-ink); flex:none;
 }
 .task-player-head h3{ margin:0; color:inherit; font-size:18px; }
 .task-player-close{
@@ -415,20 +423,33 @@ p{ margin:0 0 1em; }
 }
 .task-player-close:hover{ border-color:rgba(255,255,255,.6); }
 .task-player-close:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-.task-player-pair{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-@media (max-width:640px){ .task-player-pair{ grid-template-columns:1fr; } }
-.task-player-pair figure{ margin:0; }
+.task-player-pair{
+  display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  flex:1; min-height:0;      /* min-height:0 lets the row shrink to the frame */
+}
+.task-player-pair figure{ margin:0; position:relative; min-height:0; }
 .task-player-pair video{
-  width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
+  width:100%; height:100%; object-fit:cover; display:block;
   border-radius:10px; background:var(--film-2);
 }
+/* captions overlay the video rather than adding height below it, which is what
+   keeps the player inside the filmstrip's aspect ratio */
 .task-player-pair figcaption{
-  margin-top:8px; font-size:12.5px; color:rgba(243,234,217,.72);
+  position:absolute; left:0; right:0; bottom:0;
+  padding:22px 12px 9px; border-radius:0 0 10px 10px;
+  background:linear-gradient(to top, rgba(8,6,4,.78), transparent);
+  font-size:12.5px; color:rgba(243,234,217,.92);
   display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;
 }
 .task-player-pair figcaption span{
   font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
-  color:rgba(243,234,217,.5);
+  color:rgba(243,234,217,.6);
+}
+/* stacked on narrow screens, where one wide row of two videos would be tiny */
+@media (max-width:640px){
+  .stage-view{ aspect-ratio:auto; }
+  .task-player-pair{ grid-template-columns:1fr; }
+  .task-player-pair video{ aspect-ratio:16/9; height:auto; }
 }
 
 /* ---------- Compare table ---------- */

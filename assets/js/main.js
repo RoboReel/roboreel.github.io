@@ -70,11 +70,7 @@
     var selected = null;
 
     function labelOf(card) {
-      // the card text minus its leading letter badge
-      var clone = card.cloneNode(true);
-      var badge = clone.querySelector(".letter");
-      if (badge) badge.parentNode.removeChild(badge);
-      return clone.textContent.trim();
+      return card.textContent.trim();
     }
 
     function showFilmstrip() {
