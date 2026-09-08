@@ -274,7 +274,12 @@
       <div class="sprockets bottom"></div>
     </div>
 
-    <div class="task-grid" style="margin-top:22px">
+    <p class="stage-hint">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5l13.5 8L12 13l-2.5 6.5z" fill="currentColor"/></svg>
+      Select a task to watch its human demonstration and paired robot rollout
+    </p>
+
+    <div class="task-grid">
       <button type="button" class="task-card" data-task="push_cube" aria-pressed="false">Push Cube</button>
       <button type="button" class="task-card" data-task="close_drawer" aria-pressed="false">Close Drawer</button>
       <button type="button" class="task-card" data-task="empty_basket" aria-pressed="false">Empty Basket</button>
@@ -350,12 +355,13 @@
     <div class="tabpanel active" data-panel="nd">
       <div class="table-wrap">
         <table class="results-table">
+          <colgroup><col class="c-family"><col class="c-model"></colgroup>
           <thead>
             <tr><th>Family</th><th>Model</th><th>Bowl in<br>Plate</th><th>Close<br>Drawer</th><th>Empty<br>Basket</th><th>Open<br>Lid</th><th>Pick<br>Cube</th><th>Press<br>Toaster</th><th>Push<br>Cube</th><th>Stack<br>Cups</th><th>Toys in<br>Basket</th><th>Toy in<br>Drawer</th></tr>
           </thead>
           <tbody>
-            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">71.3±2.2</td><td class="na">N/A</td><td>7.8±1.9</td><td>54.1±3.6</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="fam-best">18.7±1.9</td><td class="na">N/A</td></tr>
-            <tr><th>VLM + π₀.₅</th><td>1.7±1.7</td><td class="fam-best">88.3±3.3</td><td>1.7±1.7</td><td>20.0±2.9</td><td>6.7±1.7</td><td>31.7±3.3</td><td>18.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>16.7±4.4</td></tr>
+            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">71.3±2.2</td><td class="na">N/A</td><td class="fam-best">7.8±1.9</td><td class="fam-best">54.1±3.6</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="fam-best">18.7±1.9</td><td class="na">N/A</td></tr>
+            <tr><th>VLM + π₀.₅</th><td>1.7±1.7</td><td class="fam-best">88.3±3.3</td><td>1.7±1.7</td><td>20.0±2.9</td><td class="fam-best">6.7±1.7</td><td class="fam-best">31.7±3.3</td><td class="fam-best">18.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td class="fam-best">16.7±4.4</td></tr>
             <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>31.7±3.3</td><td>98.3±1.7</td><td>18.3±6.7</td><td class="best">93.3±4.4</td><td class="best">55.0±5.8</td><td>83.3±3.3</td><td>78.3±6.0</td><td class="best">11.7±3.3</td><td>20.0±2.9</td><td>16.7±7.3</td></tr>
             <tr><th>π₀.₅ (Keyframes)</th><td class="fam-best">46.7±6.0</td><td class="best">100.0±0.0</td><td class="best">20.0±2.9</td><td>73.3±1.7</td><td>23.3±7.3</td><td class="best">88.3±6.7</td><td class="best">100.0±0.0</td><td>8.3±3.3</td><td class="best">21.7±3.3</td><td class="best">20.0±7.6</td></tr>
             <tr><th>Vid2Robot</th><td>1.7±1.7</td><td>21.7±3.3</td><td>3.3±1.7</td><td>3.3±3.3</td><td>1.7±1.7</td><td>21.7±6.0</td><td>5.0±2.9</td><td>3.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
@@ -369,13 +375,14 @@
     <div class="tabpanel" data-panel="wd">
       <div class="table-wrap">
         <table class="results-table">
+          <colgroup><col class="c-family"><col class="c-model"></colgroup>
           <thead>
             <tr><th>Family</th><th>Model</th><th>Bowl in<br>Plate</th><th>Close<br>Drawer</th><th>Empty<br>Basket</th><th>Open<br>Lid</th><th>Pick<br>Cube</th><th>Press<br>Toaster</th><th>Push<br>Cube</th><th>Stack<br>Cups</th><th>Toys in<br>Basket</th><th>Toy in<br>Drawer</th></tr>
           </thead>
           <tbody>
-            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">66.3±0.4</td><td class="na">N/A</td><td>4.9±2.0</td><td class="fam-best">37.8±3.1</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="best">11.1±2.3</td><td class="na">N/A</td></tr>
-            <tr><th>VLM + π₀.₅</th><td>30.0±7.6</td><td>63.3±4.4</td><td class="fam-best">13.3±1.7</td><td>18.3±4.4</td><td class="fam-best">5.0±5.0</td><td>13.3±1.7</td><td>15.0±5.0</td><td>0.0±0.0</td><td>1.7±1.7</td><td>5.0±2.9</td></tr>
-            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>86.7±4.4</td><td class="best">86.7±3.3</td><td class="best">25.0±2.9</td><td>73.3±10.1</td><td>13.3±6.0</td><td>45.0±7.6</td><td class="best">71.7±8.3</td><td>5.0±0.0</td><td class="best">5.0±2.9</td><td class="best">23.3±3.3</td></tr>
+            <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="fam-best">66.3±0.4</td><td class="na">N/A</td><td>4.9±2.0</td><td class="fam-best">37.8±3.1</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="best">11.1±2.3</td><td class="na">N/A</td></tr>
+            <tr><th>VLM + π₀.₅</th><td>30.0±7.6</td><td class="fam-best">63.3±4.4</td><td class="fam-best">13.3±1.7</td><td>18.3±4.4</td><td class="fam-best">5.0±5.0</td><td class="fam-best">13.3±1.7</td><td class="fam-best">15.0±5.0</td><td>0.0±0.0</td><td>1.7±1.7</td><td class="fam-best">5.0±2.9</td></tr>
+            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>86.7±4.4</td><td class="best">86.7±3.3</td><td class="best">25.0±2.9</td><td>73.3±10.1</td><td>13.3±6.0</td><td>45.0±7.6</td><td class="best">71.7±8.3</td><td>5.0±0.0</td><td class="fam-best">5.0±2.9</td><td class="best">23.3±3.3</td></tr>
             <tr><th>π₀.₅ (Keyframes)</th><td class="best">88.3±7.3</td><td>85.0±5.0</td><td>21.7±7.3</td><td class="best">85.0±2.9</td><td class="best">48.3±6.0</td><td class="best">56.7±6.0</td><td>21.7±6.0</td><td class="best">8.3±4.4</td><td>3.3±1.7</td><td>18.3±1.7</td></tr>
             <tr><th>Vid2Robot</th><td>6.7±4.4</td><td>10.0±5.8</td><td>3.3±3.3</td><td>0.0±0.0</td><td>0.0±0.0</td><td>30.0±5.0</td><td>8.3±3.3</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
             <tr><th>UniSkill</th><td>0.0±0.0</td><td>56.7±13.6</td><td>10.0±2.9</td><td>21.7±6.7</td><td>1.7±1.7</td><td>21.7±7.3</td><td>8.3±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
@@ -388,14 +395,15 @@
     <div class="tabpanel" data-panel="ed">
       <div class="table-wrap">
         <table class="results-table">
+          <colgroup><col class="c-family"><col class="c-model"></colgroup>
           <thead>
             <tr><th>Family</th><th>Model</th><th>Bowl in<br>Plate</th><th>Close<br>Drawer</th><th>Empty<br>Basket</th><th>Open<br>Lid</th><th>Pick<br>Cube</th><th>Press<br>Toaster</th><th>Push<br>Cube</th><th>Stack<br>Cups</th><th>Toys in<br>Basket</th><th>Toy in<br>Drawer</th></tr>
           </thead>
           <tbody>
             <tr><th rowspan="2">Explicit</th><th>SeeDo</th><td class="best">66.3±0.4</td><td class="na">N/A</td><td>4.9±2.0</td><td class="fam-best">37.8±3.1</td><td class="na">N/A</td><td class="na">N/A</td><td class="na">N/A</td><td>0.0±0.0</td><td class="fam-best">11.1±2.3</td><td class="na">N/A</td></tr>
-            <tr><th>VLM + π₀.₅</th><td>6.7±3.3</td><td>61.7±3.3</td><td>5.0±5.0</td><td>6.7±1.7</td><td>11.7±4.4</td><td>15.0±5.0</td><td>6.7±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
-            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td>31.7±4.4</td><td>58.3±8.3</td><td>18.3±4.4</td><td>61.7±4.4</td><td>25.0±5.8</td><td>15.0±5.0</td><td>6.7±4.4</td><td>5.0±2.9</td><td>11.7±4.4</td><td>6.7±1.7</td></tr>
-            <tr><th>π₀.₅ (Keyframes)</th><td>25.0±5.0</td><td class="best">70.0±2.9</td><td class="best">21.7±4.4</td><td class="best">63.3±4.4</td><td class="best">30.0±5.0</td><td>26.7±4.4</td><td class="best">31.7±3.3</td><td class="best">11.7±4.4</td><td class="best">18.3±3.3</td><td>6.7±1.7</td></tr>
+            <tr><th>VLM + π₀.₅</th><td>6.7±3.3</td><td class="fam-best">61.7±3.3</td><td class="fam-best">5.0±5.0</td><td>6.7±1.7</td><td class="fam-best">11.7±4.4</td><td class="fam-best">15.0±5.0</td><td class="fam-best">6.7±1.7</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
+            <tr><th rowspan="4">Implicit</th><th>π₀.₅ (Uniform)</th><td class="fam-best">31.7±4.4</td><td>58.3±8.3</td><td>18.3±4.4</td><td>61.7±4.4</td><td>25.0±5.8</td><td>15.0±5.0</td><td>6.7±4.4</td><td>5.0±2.9</td><td>11.7±4.4</td><td class="best">6.7±1.7</td></tr>
+            <tr><th>π₀.₅ (Keyframes)</th><td>25.0±5.0</td><td class="best">70.0±2.9</td><td class="best">21.7±4.4</td><td class="best">63.3±4.4</td><td class="best">30.0±5.0</td><td>26.7±4.4</td><td class="best">31.7±3.3</td><td class="best">11.7±4.4</td><td class="best">18.3±3.3</td><td class="best">6.7±1.7</td></tr>
             <tr><th>Vid2Robot</th><td>0.0±0.0</td><td>23.3±1.7</td><td>5.0±2.9</td><td>0.0±0.0</td><td>0.0±0.0</td><td>23.3±9.3</td><td>6.7±3.3</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
             <tr><th>UniSkill</th><td>0.0±0.0</td><td>63.3±14.8</td><td>0.0±0.0</td><td>18.3±1.7</td><td>1.7±1.7</td><td class="best">28.3±8.8</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td></tr>
           </tbody>

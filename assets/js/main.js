@@ -42,15 +42,18 @@
   onScroll();
 
   // ---- Tabs (results ND/WD/ED) ----
+  // The panels are siblings of the [data-tabs] strip, not children of it, so
+  // scope the panel lookup to the shared parent.
   document.querySelectorAll("[data-tabs]").forEach(function (group) {
+    var scope = group.parentNode;
     var tabs = group.querySelectorAll(".tab");
-    var panels = group.querySelectorAll(".tabpanel");
+    var panels = scope.querySelectorAll(".tabpanel");
     tabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
         tabs.forEach(function (t) { t.setAttribute("aria-selected", "false"); });
         panels.forEach(function (p) { p.classList.remove("active"); });
         tab.setAttribute("aria-selected", "true");
-        var target = group.querySelector('[data-panel="' + tab.dataset.tab + '"]');
+        var target = scope.querySelector('[data-panel="' + tab.dataset.tab + '"]');
         if (target) target.classList.add("active");
       });
     });

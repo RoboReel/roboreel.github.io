@@ -23,6 +23,7 @@
   --film-ink:  #f3ead9;
 
   --good:      #2b6b3f;
+  --bad:       #a8352a;
   --best:      #b5361f;
 
   --shadow: 0 1px 2px rgba(28,24,16,.06), 0 10px 30px -12px rgba(28,24,16,.18);
@@ -60,6 +61,7 @@
     --film-ink:  #f3ead9;
 
     --good:      #7fd39a;
+    --bad:       #f39084;
     --best:      #ff8a66;
 
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.6);
@@ -89,6 +91,7 @@
   --film-ink:  #f3ead9;
 
   --good:      #7fd39a;
+  --bad:       #f39084;
   --best:      #ff8a66;
 
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.6);
@@ -376,6 +379,14 @@ p{ margin:0 0 1em; }
 .suite dd{ margin:2px 0 0; }
 
 /* ---------- Tasks filmstrip ---------- */
+/* affordance for the cards below, which aren't otherwise obviously clickable */
+.stage-hint{
+  display:flex; align-items:center; gap:8px; margin:0 0 12px;
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--accent-ink);
+}
+.stage-hint svg{ width:13px; height:13px; flex:none; opacity:.85; }
+
 .task-grid{
   display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
   /* every row matches the tallest card, so a label that wraps to two lines
@@ -468,14 +479,25 @@ tbody tr:last-child td, tbody tr:last-child th{ border-bottom:none; }
 tr.ours{ background:var(--accent-soft); font-weight:700; }
 tr.ours th{ color:var(--accent-ink); }
 .yes{ color:var(--good); font-weight:700; }
-.no{ color:var(--muted); }
+.no{ color:var(--bad); font-weight:700; }
+/* The marks read as columns of symbols, so centre them under their headers.
+   Scoped to the comparison table - the results tables keep their numbers
+   left-aligned. The leading Dataset / model-name column stays left too. */
+.compare-block thead th:not(:first-child),
+.compare-block tbody td{ text-align:center; }
 .group-gap td, .group-gap th{ border-top:1px solid var(--line-strong); }
 
 /* results table specifics */
 .results-table td, .results-table th{ text-align:center; font-size:12.8px; font-variant-numeric:tabular-nums; }
 .results-table thead th:first-child, .results-table thead th:nth-child(2),
 .results-table tbody th{ text-align:left; }
-.results-table tbody th{ white-space:normal; min-width:150px; }
+.results-table tbody th{ white-space:normal; min-width:0; }
+/* Sized so all ten task columns fit the container without a scrollbar. The
+   colgroup is used because rowspan on the Family cells means :first-child
+   would hit the Model cell on most rows. */
+.results-table .c-family{ width:100px; }
+.results-table .c-model{ width:128px; }
+.results-table td, .results-table th{ padding-left:10px; padding-right:10px; }
 .results-table .best{ color:var(--best); font-weight:700; }
 .results-table .fam-best{ font-weight:700; color:var(--ink); }
 .results-table .na{ color:var(--muted); }
