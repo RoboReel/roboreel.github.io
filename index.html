@@ -11,7 +11,7 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -32,7 +32,6 @@
       <a href="#abstract">Abstract</a>
       <a href="#benchmark">Benchmark</a>
       <a href="#tasks">Tasks</a>
-      <a href="#compare">Compare</a>
       <a href="#baselines">Baselines</a>
       <a href="#results">Results</a>
       <a href="#analysis">Analysis</a>
@@ -48,7 +47,6 @@
     <li><a href="#abstract"><span class="dot"></span><span class="label">Abstract</span></a></li>
     <li><a href="#benchmark"><span class="dot"></span><span class="label">Benchmark</span></a></li>
     <li><a href="#tasks"><span class="dot"></span><span class="label">Tasks</span></a></li>
-    <li><a href="#compare"><span class="dot"></span><span class="label">Compare</span></a></li>
     <li><a href="#baselines"><span class="dot"></span><span class="label">Baselines</span></a></li>
     <li><a href="#results"><span class="dot"></span><span class="label">Results</span></a></li>
     <li><a href="#analysis"><span class="dot"></span><span class="label">Analysis</span></a></li>
@@ -122,6 +120,40 @@
       <div class="stat"><div class="v">4</div><div class="l">synchronized camera views</div></div>
       <div class="stat"><div class="v">4</div><div class="l">test suites (ND · WD · ED · PD)</div></div>
       <div class="stat"><div class="v">7+</div><div class="l">SOTA baselines evaluated</div></div>
+    </div>
+
+    <div id="compare" class="compare-block">
+      <h3>How RoboReel compares</h3>
+      <p style="max-width:74ch; font-size:17px; color:var(--ink-soft)">RoboReel is the only benchmark that pairs multi‑view, distractor‑annotated real‑world human video with a matching evaluation environment.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Real‑world<br>human&nbsp;vid.</th>
+              <th>Human demo.<br>w/ distractions</th>
+              <th>Multi‑view<br>demo.</th>
+              <th>Paired real‑world<br>human vid. eval env.</th>
+              <th>Env. w/<br>distractions</th>
+              <th>Multi‑view<br>env.</th>
+              <th>Articulated<br>objects</th>
+              <th>Long<br>horizon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>RoboCerebra</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th>LIBERO</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th>RoboCasa</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th>VLABench</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th>MimicGen</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr class="group-gap"><th>EgoVerse</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th>Human2Robot</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td></tr>
+            <tr><th>RH20T</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td></tr>
+            <tr><th>MimicDroid</th><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td></tr>
+            <tr class="ours group-gap"><th>RoboReel (Ours)</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -241,45 +273,6 @@
       <div class="kp-card"><img src="assets/img/keypoints/close_drawer.png" alt="Keypoint annotation for Close Drawer, overhead camera: K0-K4 on drawer front"><div class="cap">Close Drawer — 4 corner keypoints (overhead)</div></div>
       <div class="kp-card"><img src="assets/img/keypoints/open_lid.png" alt="Keypoint annotation for Open Lid"><div class="cap">Open Lid — lid + basket keypoints</div></div>
       <div class="kp-card"><img src="assets/img/keypoints/bowl_on_plate.png" alt="Keypoint annotation for Bowl on Plate"><div class="cap">Bowl in Plate — bowl + plate keypoints</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="compare">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">Comparison</span>
-      <h2>How RoboReel compares</h2>
-      <p>RoboReel is the only benchmark that pairs multi‑view, distractor‑annotated real‑world human video with a matching evaluation environment.</p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Dataset</th>
-            <th>Real‑world<br>human&nbsp;vid.</th>
-            <th>Human demo.<br>w/ distractions</th>
-            <th>Multi‑view<br>demo.</th>
-            <th>Paired real‑world<br>human vid. eval env.</th>
-            <th>Env. w/<br>distractions</th>
-            <th>Multi‑view<br>env.</th>
-            <th>Articulated<br>objects</th>
-            <th>Long<br>horizon</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th>RoboCerebra</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-          <tr><th>LIBERO</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-          <tr><th>RoboCasa</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-          <tr><th>VLABench</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-          <tr><th>MimicGen</th><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-          <tr class="group-gap"><th>EgoVerse</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-          <tr><th>Human2Robot</th><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td></tr>
-          <tr><th>RH20T</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td></tr>
-          <tr><th>MimicDroid</th><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td></tr>
-          <tr class="ours group-gap"><th>RoboReel (Ours)</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </section>
