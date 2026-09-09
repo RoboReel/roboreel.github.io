@@ -291,12 +291,15 @@ class Act3Still(Scene):
 # the full clip
 # --------------------------------------------------------------------------
 class Overview(Scene):
-    """All three acts back to back. Ends on an empty frame so the <video loop>
-    restart is seamless."""
+    """The two acts the site shows, back to back. Ends on an empty frame so the
+    <video loop> restart is seamless.
+
+    Act 2 (the learning-from-observation loop) is deliberately left out of the
+    clip - the page covers the method in prose - but it is kept below and still
+    renders on its own via Act2Still."""
 
     def construct(self):
         self.act1()
-        self.act2()
         self.act3()
 
     # ---- act 1 ----

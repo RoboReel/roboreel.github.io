@@ -40,8 +40,8 @@ mkdir -p "$(dirname "$OUT")" "$(dirname "$POSTER")"
 ffmpeg -y -loglevel error -i "$SRC" -an \
   -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -movflags +faststart "$OUT"
 
-# Poster: a frame from act 2, the most informative moment.
-ffmpeg -y -loglevel error -ss 16 -i "$OUT" -frames:v 1 -q:v 4 "$POSTER"
+# Poster: the end of act 1, once all four pipeline stages are on screen.
+ffmpeg -y -loglevel error -ss 6 -i "$OUT" -frames:v 1 -q:v 4 "$POSTER"
 
 echo
 echo "done:"
