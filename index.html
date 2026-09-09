@@ -83,9 +83,9 @@
       <div class="logo-asu">
         <img src="assets/img/logos/asu-horiz.png" alt="Arizona State University">
       </div>
-      <div class="logo-nvidia">
+      <!-- <div class="logo-nvidia">
         <img src="assets/img/logos/nvidia.svg" alt="NVIDIA">
-      </div>
+      </div> -->
     </div>
 
     <div class="hero-cta">
@@ -165,6 +165,18 @@
       <h2>How RoboReel is built</h2>
       <p>Six participants perform each task at a calibrated tabletop rig. Their videos are annotated with 3D hand and object poses, then mirrored into a digital‑twin simulation with matching objects, textures, and camera poses.</p>
     </div>
+
+    <!-- Rendered with Manim from tools/anim/overview.py; rebuild via
+         tools/anim/build.sh. Kept on its own cream panel because the animation
+         is drawn in the light palette and does not follow the dark theme. -->
+    <figure class="pipeline-video">
+      <video autoplay muted loop playsinline preload="none"
+             poster="assets/img/pipeline-poster.jpg"
+             aria-label="Animated overview: how RoboReel is built, the learning-from-observation loop, and the four test suites">
+        <source src="assets/video/pipeline.mp4" type="video/mp4">
+      </video>
+      <figcaption>How the benchmark is built, how a model learns from a human video, and the four suites it is scored on.</figcaption>
+    </figure>
 
     <div class="pipeline">
       <img src="assets/img/pipeline.jpg" alt="RoboReel data pipeline: real-world capture rig, human video collection, 3D hand/object pose annotation, and paired simulation tasks">
@@ -311,29 +323,233 @@
     <div class="section-head">
       <span class="eyebrow">Baselines</span>
       <h2>Three ways to learn from a human video</h2>
-      <p>We group every baseline by how it turns a human demonstration into something a robot policy can act on.</p>
+      <p>Every baseline we evaluate shares one skeleton: watch a human video, build a representation of it, hand that to a policy. What separates the three families is <em>what sits in the middle</em>.</p>
     </div>
-    <img class="taxonomy-img" src="assets/img/baseline-taxonomy.jpg" alt="Diagram of the three baseline families: explicit language representation, implicit latent representation, and keypoint-based learning">
-    <div class="families">
-      <div class="family">
-        <span class="letter-badge">A</span>
-        <h4>Explicit representation</h4>
-        <p>A pretrained VLM turns the human video into a language instruction, which a downstream VLA or planner executes.</p>
-        <div class="models">SeeDo · VLM + π₀.₅ (language)</div>
-      </div>
-      <div class="family">
-        <span class="letter-badge">B</span>
-        <h4>Implicit representation</h4>
-        <p>A pretrained visual encoder maps the human video into a latent encoding that conditions an end‑to‑end policy.</p>
-        <div class="models">Video‑Cond. π₀.₅ (Uniform / Keyframes) · Vid2Robot · UniSkill</div>
-      </div>
-      <div class="family">
-        <span class="letter-badge">C</span>
-        <h4>Keypoint‑based learning</h4>
-        <p>An imitation‑learning policy trains directly on 3D hand‑pose keypoints and rolls out on an environment sharing the same action space.</p>
-        <div class="models">PointPolicy</div>
-      </div>
+
+    <div class="fam-grid">
+
+      <!-- ---------- A · Explicit ---------- -->
+      <article class="fam-card">
+        <header class="fam-top">
+          <span class="fam-letter">A</span>
+          <span class="fam-suits" title="Evaluated on the No Distraction, With Distraction and Evaluation Distraction suites">♠ ♥ ♣</span>
+        </header>
+        <h3>Explicit representation</h3>
+        <p class="fam-kicker">Video → language</p>
+
+        <div class="flow">
+          <span class="stage-tag">Human demo video</span>
+          <div class="strip">
+            <div class="sprockets sm"></div>
+            <div class="strip-frames">
+              <div class="kf"><img src="assets/img/taxonomy/demo-1.jpg" alt="Human reaching for a panda toy beside a basket" width="280" height="210" loading="lazy" decoding="async"></div>
+              <span class="ell" aria-hidden="true">⋯</span>
+              <div class="kf"><img src="assets/img/taxonomy/demo-2.jpg" alt="Human grasping the panda toy" width="280" height="210" loading="lazy" decoding="async"></div>
+              <span class="ell" aria-hidden="true">⋯</span>
+              <div class="kf"><img src="assets/img/taxonomy/demo-3.jpg" alt="Panda toy placed inside the basket" width="280" height="210" loading="lazy" decoding="async"></div>
+            </div>
+            <div class="sprockets sm bottom"></div>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="node node-encode">
+            <b>Pre‑trained VLM</b>
+            <small>e.g. Qwen3‑VL‑4B</small>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="rep-row">
+            <div class="rep">
+              <span class="rep-tag">Language instruction</span>
+              <div class="rep-body">
+                <p class="quote">“Put the panda toy in the basket, then put the elephant in the basket.”</p>
+              </div>
+            </div>
+            <span class="plus" aria-hidden="true">+</span>
+            <div class="env">
+              <img src="assets/img/taxonomy/sim-env.jpg" alt="Simulated robot arm above the basket" width="280" height="210" loading="lazy" decoding="async">
+              <span>Sim. observation</span>
+            </div>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="node node-act">
+            <b>Down‑stream VLA or planner</b>
+            <small>acts on the sentence alone</small>
+          </div>
+        </div>
+
+        <div class="fam-foot">
+          <p class="fam-desc">A pre‑trained VLM watches the demo and writes down what it saw. Everything downstream sees only that sentence — the video itself is discarded, so any detail the words miss is gone.</p>
+          <div class="fam-models">
+            <span class="mtag">Baselines</span>
+            <span class="chip">SeeDo</span>
+            <span class="chip ours">VLM + π₀.₅</span>
+            <span class="chip ghost" title="Language oracle: π₀.₅ conditioned on expert-written instructions">π₀.₅ (expert language)</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------- B · Implicit ---------- -->
+      <article class="fam-card">
+        <header class="fam-top">
+          <span class="fam-letter">B</span>
+          <span class="fam-suits" title="Evaluated on the No Distraction, With Distraction and Evaluation Distraction suites">♠ ♥ ♣</span>
+        </header>
+        <h3>Implicit representation</h3>
+        <p class="fam-kicker">Video → latent</p>
+
+        <div class="flow">
+          <span class="stage-tag">Human demo video</span>
+          <div class="strip">
+            <div class="sprockets sm"></div>
+            <div class="strip-frames">
+              <div class="kf"><img src="assets/img/taxonomy/demo-1.jpg" alt="" width="280" height="210" loading="lazy" decoding="async"></div>
+              <span class="ell" aria-hidden="true">⋯</span>
+              <div class="kf"><img src="assets/img/taxonomy/demo-2.jpg" alt="" width="280" height="210" loading="lazy" decoding="async"></div>
+              <span class="ell" aria-hidden="true">⋯</span>
+              <div class="kf"><img src="assets/img/taxonomy/demo-3.jpg" alt="" width="280" height="210" loading="lazy" decoding="async"></div>
+            </div>
+            <div class="sprockets sm bottom"></div>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="node node-encode">
+            <b>Pre‑trained visual encoder</b>
+            <small>uniform · keyframe sampling</small>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="rep-row">
+            <div class="rep">
+              <span class="rep-tag">Latent video encoding</span>
+              <div class="rep-body">
+                <div class="tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                <p class="rep-note">Visual tokens — a skill embedding, never words</p>
+              </div>
+            </div>
+            <span class="plus" aria-hidden="true">+</span>
+            <div class="env">
+              <img src="assets/img/taxonomy/sim-env.jpg" alt="" width="280" height="210" loading="lazy" decoding="async">
+              <span>Sim. observation</span>
+            </div>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="node node-act">
+            <b>Down‑stream end‑to‑end policy</b>
+            <small>conditioned on the embedding</small>
+          </div>
+        </div>
+
+        <div class="fam-foot">
+          <p class="fam-desc">An encoder compresses the demo into latent skill tokens that condition the policy directly. Nothing has to survive a round trip through language — and this family wins on every suite.</p>
+          <div class="fam-models">
+            <span class="mtag">Baselines</span>
+            <span class="chip ours">Vid.‑cond. π₀.₅ (Uniform)</span>
+            <span class="chip ours">Vid.‑cond. π₀.₅ (Keyframes)</span>
+            <span class="chip">Vid2Robot</span>
+            <span class="chip">UniSkill</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------- C · Keypoint ---------- -->
+      <article class="fam-card">
+        <header class="fam-top">
+          <span class="fam-letter">C</span>
+          <span class="fam-suits" title="Evaluated on the Pose-Defined suite">♦</span>
+        </header>
+        <h3>Keypoint‑based learning</h3>
+        <p class="fam-kicker">Video → 3D keypoints</p>
+
+        <div class="flow">
+          <span class="stage-tag">Pose‑defined demo</span>
+          <div class="strip">
+            <div class="sprockets sm"></div>
+            <div class="strip-frames">
+              <div class="kf">
+                <img src="assets/img/taxonomy/demo-1.jpg" alt="Human demo frame annotated with hand and object keypoints" width="280" height="210" loading="lazy" decoding="async">
+                <span class="kp kp-h" style="left:7%;  top:55%"></span>
+                <span class="kp kp-o" style="left:85%; top:76%"></span>
+              </div>
+              <span class="ell" aria-hidden="true">⋯</span>
+              <div class="kf">
+                <img src="assets/img/taxonomy/demo-2.jpg" alt="" width="280" height="210" loading="lazy" decoding="async">
+                <span class="kp kp-h" style="left:75%; top:66%"></span>
+                <span class="kp kp-o" style="left:87%; top:78%"></span>
+              </div>
+              <span class="ell" aria-hidden="true">⋯</span>
+              <div class="kf">
+                <img src="assets/img/taxonomy/demo-3.jpg" alt="" width="280" height="210" loading="lazy" decoding="async">
+                <span class="kp kp-h" style="left:40%; top:13%"></span>
+                <span class="kp kp-o" style="left:56%; top:50%"></span>
+              </div>
+            </div>
+            <div class="sprockets sm bottom"></div>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="node node-encode">
+            <b>Keypoint tracking + retargeting</b>
+            <small>DIFT · CoTracker</small>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="rep-row">
+            <div class="rep">
+              <span class="rep-tag">3D keypoint trajectory</span>
+              <div class="rep-body">
+                <svg class="traj" viewBox="0 0 178 24" aria-hidden="true">
+                  <path class="tr-path" d="M6 19 C 32 3, 60 3, 88 11 S 148 19, 172 5"/>
+                  <circle class="tr-o" cx="52" cy="17" r="3.2"/>
+                  <circle class="tr-o" cx="132" cy="15" r="3.2"/>
+                  <circle class="tr-h" cx="6" cy="19" r="2.4"/>
+                  <circle class="tr-h" cx="88" cy="11" r="2.4"/>
+                  <circle class="tr-h" cx="172" cy="5" r="3.2"/>
+                </svg>
+                <p class="rep-note">Hand + object keypoints, in the robot’s frame</p>
+              </div>
+            </div>
+            <span class="plus" aria-hidden="true">+</span>
+            <div class="env">
+              <img src="assets/img/taxonomy/sim-env.jpg" alt="" width="280" height="210" loading="lazy" decoding="async">
+              <span>Calibrated env.</span>
+            </div>
+          </div>
+
+          <div class="arrow" aria-hidden="true"></div>
+
+          <div class="node node-act">
+            <b>Imitation‑learning policy</b>
+            <small>predicts the next end‑effector keypoints</small>
+          </div>
+        </div>
+
+        <div class="fam-foot">
+          <p class="fam-desc">Hand and object keypoints are tracked through the demo and retargeted into the robot’s end‑effector frame, so human and robot share one action space — but grasp pose is hard to read off points alone.</p>
+          <div class="fam-models">
+            <span class="mtag">Baselines</span>
+            <span class="chip">PointPolicy</span>
+          </div>
+        </div>
+      </article>
+
     </div>
+
+    <p class="fam-legend">
+      <span><i class="sw sw-ours"></i>Introduced and trained in this work</span>
+      <span><i class="sw sw-ghost"></i>Language oracle — expert‑written instructions, to upper‑bound the VLM’s output</span>
+      <span class="fam-legend-note">Suits mark the test suites each family is scored on.</span>
+    </p>
   </div>
 </section>
 

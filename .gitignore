@@ -14,3 +14,10 @@ assets/task_src/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Manim render environment. The scene source, fonts and source stills ARE
+# committed; the venv (~480 MB) and intermediate renders are not. Rebuild with:
+#   python3 -m venv tools/anim/.venv && tools/anim/.venv/bin/pip install manim
+#   tools/anim/build.sh
+tools/anim/.venv/
+tools/anim/.render/

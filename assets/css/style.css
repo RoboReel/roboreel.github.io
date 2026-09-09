@@ -346,6 +346,19 @@ p{ margin:0 0 1em; }
 .stat .l{ font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.3; }
 
 /* ---------- Pipeline ---------- */
+/* The Manim overview. Its own canvas is painted in the light palette, so the
+   panel keeps a cream ground in both themes rather than letting a dark page
+   show a bright rectangle with no frame. */
+.pipeline-video{
+  margin:0 0 52px; padding:10px; background:#f7f1e4;
+  border:1px solid var(--line-strong); border-radius:16px; box-shadow:var(--shadow);
+}
+.pipeline-video video{ width:100%; display:block; border-radius:9px; }
+.pipeline-video figcaption{
+  margin:12px 4px 3px; font-size:13px; color:#5b5647;
+  font-family:var(--mono); letter-spacing:.02em;
+}
+
 .pipeline{ display:grid; grid-template-columns: 340px 1fr; gap:40px; align-items:center; }
 @media (max-width:800px){ .pipeline{ grid-template-columns:1fr; } }
 .pipeline img{ border-radius:12px; border:1px solid var(--line); box-shadow:var(--shadow); }
@@ -517,18 +530,145 @@ tr.ours th{ color:var(--accent-ink); }
 .tabpanel{ display:none; }
 .tabpanel.active{ display:block; }
 
-/* ---------- Baselines / taxonomy ---------- */
-.taxonomy-img{ border:1px solid var(--line); border-radius:12px; margin-bottom:28px; box-shadow:var(--shadow); }
-.families{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-@media (max-width:800px){ .families{ grid-template-columns:1fr; } }
-.family{ border:1px solid var(--line); border-radius:12px; padding:18px 18px; background:var(--surface); }
-.family .letter-badge{
-  display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%;
-  background:var(--ink); color:var(--bg); font-family:var(--mono); font-size:12px; margin-bottom:10px;
+/* ---------- Baselines / taxonomy ----------
+   Replaces the screenshot of Figure 3: each family is drawn as the same
+   four-tier pipeline (demo -> encoder -> representation -> policy) so the only
+   thing that visibly differs between the three cards is the middle tier, which
+   is what the taxonomy is actually about. The tiers are fixed-height so they
+   line up across the three columns. */
+.fam-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+@media (max-width:940px){ .fam-grid{ grid-template-columns:1fr; max-width:440px; margin:0 auto; } }
+.fam-card{
+  display:flex; flex-direction:column;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px 20px 22px; box-shadow:var(--shadow);
 }
-.family h4{ font-size:15.5px; margin-bottom:6px; }
-.family p{ font-size:13.5px; color:var(--ink-soft); margin-bottom:10px; }
-.family .models{ font-size:12px; font-family:var(--mono); color:var(--muted); }
+.fam-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.fam-letter{
+  display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%;
+  background:var(--ink); color:var(--bg); font-family:var(--mono); font-size:12px; font-weight:600;
+}
+.fam-suits{ font-size:14px; letter-spacing:.08em; color:var(--accent); cursor:help; }
+.fam-card h3{ font-size:17px; line-height:1.25; margin:0; }
+.fam-kicker{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); margin:6px 0 0;
+}
+
+/* --- the pipeline --- */
+.flow{ margin:18px 0 4px; }
+.stage-tag{
+  display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:6px;
+}
+.strip{ background:var(--film); border-radius:9px; padding:0 7px; overflow:hidden; }
+/* --film-ink rather than --bg: in dark mode --bg is almost --film, which would
+   make the perforations disappear */
+.sprockets.sm{
+  height:9px;
+  background-image: radial-gradient(circle, var(--film-ink) 0 2.4px, transparent 2.7px);
+  background-size: 17px 9px;
+  background-position: 4px center;
+}
+.strip-frames{ display:flex; align-items:center; gap:3px; }
+.kf{ position:relative; flex:1; border-radius:3px; overflow:hidden; line-height:0; }
+/* height:auto is load-bearing - the width/height attributes on the <img> are
+   presentational hints that would otherwise beat aspect-ratio */
+.kf img{ width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; display:block; }
+.strip .ell{ color:var(--film-ink); opacity:.6; font-size:11px; line-height:1; flex:none; }
+/* keypoint markers drawn over the demo frames (family C) - fixed colours, since
+   they sit on a photograph in both themes */
+.kp{
+  position:absolute; width:7px; height:7px; border-radius:50%;
+  transform:translate(-50%,-50%); box-shadow:0 0 0 1.4px rgba(0,0,0,.5);
+}
+.kp-h{ background:#f2883f; }
+.kp-o{ background:#6fd18f; }
+
+.arrow{ position:relative; height:19px; }
+.arrow::before{
+  content:""; position:absolute; left:50%; top:0; bottom:5px; width:1.5px;
+  background:var(--line-strong); transform:translateX(-50%);
+}
+.arrow::after{
+  content:""; position:absolute; left:50%; bottom:0; transform:translateX(-50%);
+  border-left:4.5px solid transparent; border-right:4.5px solid transparent;
+  border-top:6px solid var(--line-strong);
+}
+
+.node{
+  min-height:46px; border-radius:10px; padding:7px 10px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; text-align:center;
+}
+.node b{ font-size:12.5px; font-weight:600; line-height:1.25; }
+.node small{ font-family:var(--mono); font-size:9px; letter-spacing:.03em; line-height:1.3; }
+.node-encode{ background:var(--panel-peach); border:1px solid var(--line-strong); color:var(--ink); }
+.node-encode small{ color:var(--accent-ink); opacity:.85; }
+.node-act{ background:var(--panel-orange); color:var(--panel-orange-ink); }
+.node-act small{ opacity:.75; }
+
+/* the middle tier - the one thing that differs between the families */
+.rep-row{ display:flex; align-items:stretch; gap:7px; }
+.rep{
+  flex:1; min-width:0; background:var(--bg-plane);
+  border:1.5px dashed var(--line-strong); border-radius:10px; padding:8px 10px 9px;
+}
+.rep-tag{
+  display:block; font-family:var(--mono); font-size:8.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--accent-ink); margin-bottom:6px;
+}
+.rep-body{ min-height:56px; display:flex; flex-direction:column; justify-content:center; gap:7px; }
+.rep-body .quote{ font-size:10.6px; line-height:1.45; font-style:italic; color:var(--ink); margin:0; }
+.rep-note{ font-size:9.5px; line-height:1.3; color:var(--muted); margin:0; }
+.tokens{ display:flex; gap:4px; }
+.tokens i{ flex:1; height:16px; border-radius:5px; background:var(--accent-soft); border:1px solid var(--line-strong); }
+.traj{ width:100%; height:24px; display:block; overflow:visible; }
+.traj .tr-path{ fill:none; stroke:var(--accent); stroke-width:1.5; stroke-dasharray:3 3; opacity:.85; }
+.traj .tr-h{ fill:var(--accent); }
+.traj .tr-o{ fill:none; stroke:var(--good); stroke-width:1.4; }
+.plus{ align-self:center; font-size:14px; color:var(--muted); flex:none; }
+.env{ width:78px; flex:none; display:flex; flex-direction:column; justify-content:center; gap:5px; }
+.env img{
+  width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; display:block;
+  border-radius:6px; border:1px solid var(--line-strong);
+}
+.env span{ font-family:var(--mono); font-size:8.5px; line-height:1.3; text-align:center; color:var(--muted); }
+
+/* --- what the family is, and who is in it --- */
+/* the description follows the diagram directly; only the chips bottom-align,
+   so the three cards end on the same line however long the prose runs */
+.fam-foot{ flex:1; display:flex; flex-direction:column; padding-top:16px; }
+.fam-desc{ font-size:13.2px; line-height:1.55; color:var(--ink-soft); margin:0 0 14px; }
+.fam-models{ display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
+.mtag{
+  width:100%; font-family:var(--mono); font-size:9.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:1px;
+}
+.chip{
+  font-family:var(--mono); font-size:11px; padding:4px 9px; border-radius:999px;
+  border:1px solid var(--line-strong); background:var(--surface); color:var(--ink-soft);
+}
+.chip.ours{ background:var(--accent-soft); border-color:transparent; color:var(--accent-ink); font-weight:600; }
+.chip.ghost{ border-style:dashed; background:transparent; color:var(--muted); cursor:help; }
+
+.fam-legend{
+  display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center;
+  margin:22px 0 0; font-size:12.5px; color:var(--ink-soft);
+}
+.fam-legend .sw{
+  display:inline-block; width:20px; height:11px; border-radius:999px; margin-right:7px;
+  vertical-align:-1px; border:1px solid var(--line-strong);
+}
+.fam-legend .sw-ours{ background:var(--accent-soft); border-color:transparent; }
+.fam-legend .sw-ghost{ background:transparent; border-style:dashed; }
+.fam-legend-note{ color:var(--muted); }
+/* between the breakpoint and full width the three columns get tight, so give
+   the representation tier back the room the env thumbnail takes */
+@media (min-width:941px) and (max-width:1080px){
+  .env{ width:64px; }
+  .rep-body .quote{ font-size:10px; line-height:1.4; }
+  .node b{ font-size:12px; }
+}
 
 /* ---------- Pose-defined chart ---------- */
 .pd-wrap{ display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center; }
