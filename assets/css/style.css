@@ -317,6 +317,7 @@ p{ margin:0 0 1em; }
 
 .hero-cta{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
 .pill{
+  display:inline-flex; align-items:center; gap:8px;
   font-family:var(--sans); font-weight:600; font-size:14.5px;
   padding:11px 22px; border-radius:999px; text-decoration:none;
   background:rgba(244,237,224,.1); color:#f4ede0; border:1px solid rgba(244,237,224,.28);
@@ -325,7 +326,9 @@ p{ margin:0 0 1em; }
 .pill:hover{ background:rgba(244,237,224,.18); }
 .pill[disabled]{ color:rgba(244,237,224,.45); cursor:default; }
 .pill[disabled]:hover{ background:rgba(244,237,224,.1); }
-.pill .soon{ font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.07em; opacity:.8; margin-left:6px; }
+.pill .soon{ font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.07em; opacity:.8; }
+/* arXiv logomark - keeps its brand colours on the dark hero */
+.pill-icon{ width:12px; height:16.4px; flex:none; display:block; }
 
 @media (prefers-reduced-motion: reduce){
   .hero-mosaic video{ display:none; }
