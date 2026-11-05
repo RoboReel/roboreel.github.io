@@ -329,6 +329,7 @@ p{ margin:0 0 1em; }
 .pill .soon{ font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.07em; opacity:.8; }
 /* arXiv logomark - keeps its brand colours on the dark hero */
 .pill-icon{ width:12px; height:16.4px; flex:none; display:block; }
+.pill-icon-square{ width:16px; height:16px; }
 
 @media (prefers-reduced-motion: reduce){
   .hero-mosaic video{ display:none; }
